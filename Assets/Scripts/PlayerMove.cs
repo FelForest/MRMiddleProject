@@ -4,24 +4,25 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    // playerController
-    private CharacterController player;
-
-    // player ÀÌµ¿ ¼Óµµ
+    // Player Rigidbody
+    private Rigidbody player;
+    // player ï¿½Ìµï¿½ ï¿½Óµï¿½
     public float walkingSpeed = 5.0f;
     public float runningSpeed = 7.5f;
     private float speed;
 
-    // player ¹æÇâ
+    private bool isRunning = false;
+
+    private bool isMoving = false;
+    // player ï¿½ï¿½ï¿½ï¿½
     private Vector3 moveDir = Vector3.zero;
 
-    //Áß·Â ³ªÁß¿¡ Æ®¸¯ ¸¸µé¶§´Â µû·Î »© ³õÀ»µí
+    //ï¿½ß·ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½é¶§ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private float graviy = 98f;
 
     private void Awake()
     {
-        // controller ¹Þ¾Æ¿À±â
-        player = transform.GetComponent<CharacterController>();
+        player = GetComponent<Rigidbody>();
     }
     // Start is called before the first frame update
     void Start()
@@ -32,33 +33,31 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // È¤½Ã ¸ø ¹Þ¾Æ¿À´Â °æ¿ì ´ëºñ
-        if (player == null)
-        {
-            Debug.Log("Player ¾øÀ½");
-            return;
-        }
-
-        // ´Þ¸®±â ±â´É
-        speed = Input.GetKey(KeyCode.LeftShift) ? runningSpeed : walkingSpeed;
-        
-        Move(speed);
+        // ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        isRunning = Input.GetKey(KeyCode.LeftShift) ? true : false;
     }
 
-    void Move(float speed)
+    void FixedUpdate()
     {
-        // Å°º¸µå·Î ÀÔ·Â ¹ÞÀ»½Ã
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        Move();
+    }
 
-        // ÀÌµ¿ ¹æÇâ °áÁ¤
-        moveDir = new Vector3(horizontalInput, 0, verticalInput);
-        moveDir = player.transform.TransformDirection(moveDir);
+    void Move()
+    {
+        // KeyButtonInput
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
 
-        //Áß·Â Àû¿ë
-        moveDir.y -= graviy * speed * Time.deltaTime;
+        
+        moveDir = new Vector3(horizontalInput,0,verticalInput);
 
-        // ÀÌµ¿
-        player.Move(moveDir * speed * Time.deltaTime);
+        speed = isRunning ? runningSpeed : walkingSpeed;
+
+        transform.position += moveDir * speed * Time.deltaTime;
+    }
+
+    void PlayerAnimition()
+    {
+
     }
 }

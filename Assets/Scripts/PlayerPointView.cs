@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerPointView : MonoBehaviour
 {
-    // ½ÃÁ¡ ¼Óµµ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
     public float sensitivity = 500.0f;
 
-    // ½ÃÁ¡
+    // ï¿½ï¿½ï¿½ï¿½
     private Vector2 viewPoint = Vector2.zero;
 
     // Start is called before the first frame update
     void Start()
     {
-        // ¸¶¿ì½º Ä¿¼­ ¾Èº¸ÀÌ°Ô ÇÏ±â
+        // ï¿½ï¿½ï¿½ì½º Ä¿ï¿½ï¿½ ï¿½Èºï¿½ï¿½Ì°ï¿½ ï¿½Ï±ï¿½
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -21,7 +21,7 @@ public class PlayerPointView : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ¸¶¿ì½º X,Y Ãà ¿òÁ÷ÀÓ °ª
+        // ï¿½ï¿½ï¿½ì½º X,Y ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
@@ -39,8 +39,25 @@ public class PlayerPointView : MonoBehaviour
 
     private void OnDestroy()
     {
-        //°ÔÀÓ ³¡³ª¸é Ä¿¼­ º¸ÀÌ°×
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    void ViewPointController()
+    {
+        // ï¿½ï¿½ï¿½ì½º X,Y ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
+
+        //Debug.Log(mouseY);
+
+        viewPoint.x -= mouseY * sensitivity * Time.deltaTime;
+        viewPoint.y += mouseX * sensitivity * Time.deltaTime;
+
+        viewPoint.x = viewPoint.x > 30 ? 30 : viewPoint.x;
+        viewPoint.x = viewPoint.x < -35 ? -35 : viewPoint.x;
+
+        transform.eulerAngles = new Vector3(viewPoint.x, viewPoint.y, 0);
     }
 }
